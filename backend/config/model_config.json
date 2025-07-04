@@ -1,0 +1,124 @@
+{
+  "model_list": [
+    {
+      "model_name": "reasoning-primary",
+      "litellm_params": {
+        "model": "deepseek/deepseek-r1",
+        "api_key": "os.environ/DEEPSEEK_API_KEY",
+        "rpm": 60,
+        "max_tokens": 4000,
+        "temperature": 0.1
+      },
+      "model_info": {
+        "tier": "paid",
+        "cost_per_million_tokens": 0.95,
+        "math_score": 99,
+        "latency_ms": 380,
+        "use_cases": ["complex_analysis", "meic_construction", "risk_modeling", "options_flow_analysis"],
+        "description": "DeepSeek R1 - #1 global mathematical reasoning model"
+      }
+    },
+    {
+      "model_name": "cost-primary",
+      "litellm_params": {
+        "model": "openrouter/qwen/qwq-32b-preview",
+        "api_key": "os.environ/OPENROUTER_API_KEY",
+        "rpm": 100,
+        "max_tokens": 2000,
+        "temperature": 0.1
+      },
+      "model_info": {
+        "tier": "paid",
+        "cost_per_million_tokens": 0.11,
+        "math_score": 91,
+        "latency_ms": 430,
+        "use_cases": ["market_analysis", "support_resistance", "general_queries", "batch_processing"],
+        "description": "QwQ 32B - High performance at ultra-low cost"
+      }
+    },
+    {
+      "model_name": "speed-primary", 
+      "litellm_params": {
+        "model": "openrouter/x-ai/grok-beta",
+        "api_key": "os.environ/OPENROUTER_API_KEY",
+        "rpm": 200,
+        "max_tokens": 1500,
+        "temperature": 0.1
+      },
+      "model_info": {
+        "tier": "paid",
+        "cost_per_million_tokens": 0.35,
+        "math_score": 96,
+        "latency_ms": 330,
+        "use_cases": ["real_time_analysis", "quick_validation", "live_monitoring", "alerts"],
+        "description": "Grok 3 Mini - Fast responses with excellent math capability"
+      }
+    },
+    {
+      "model_name": "reasoning-backup",
+      "litellm_params": {
+        "model": "openrouter/deepseek/deepseek-r1",
+        "api_key": "os.environ/OPENROUTER_API_KEY",
+        "rpm": 30,
+        "max_tokens": 4000,
+        "temperature": 0.1
+      },
+      "model_info": {
+        "tier": "paid",
+        "cost_per_million_tokens": 0.95,
+        "math_score": 99,
+        "latency_ms": 380,
+        "use_cases": ["backup_reasoning", "fallback_analysis"],
+        "description": "DeepSeek R1 via OpenRouter - Backup for primary reasoning"
+      }
+    }
+  ],
+  "router_settings": {
+    "routing_strategy": "least-busy",
+    "fallback_models": {
+      "reasoning": ["reasoning-primary", "reasoning-backup"],
+      "cost": ["cost-primary", "speed-primary"],
+      "speed": ["speed-primary", "cost-primary"]
+    },
+    "retry_policy": {
+      "max_retries": 3,
+      "backoff_factor": 2,
+      "timeout_seconds": 30
+    }
+  },
+  "agent_routing": {
+    "market_regime": "reasoning",
+    "meic_construction": "reasoning",
+    "volatility_surface": "speed", 
+    "support_resistance": "cost",
+    "liquidity_analysis": "cost",
+    "options_flow": "reasoning",
+    "risk_validation": "reasoning",
+    "economic_calendar": "cost",
+    "momentum_detection": "cost",
+    "breakout_analysis": "speed"
+  },
+  "cost_tracking": {
+    "daily_budget_usd": 10.0,
+    "monthly_budget_usd": 200.0,
+    "alert_threshold_percent": 80.0,
+    "track_by_agent": true,
+    "track_by_user": true
+  },
+  "fallback_strategy": {
+    "enable_fallbacks": true,
+    "fallback_delay_ms": 1000,
+    "max_fallback_attempts": 2,
+    "emergency_fallback": "cost-primary"
+  },
+  "cost_optimization": {
+    "use_caching": true,
+    "cache_ttl_minutes": 5,
+    "batch_requests": true,
+    "tier_switching": {
+      "enable_auto_downgrade": true,
+      "cost_threshold_per_request": 0.01,
+      "performance_threshold_ms": 5000
+    }
+  }
+}

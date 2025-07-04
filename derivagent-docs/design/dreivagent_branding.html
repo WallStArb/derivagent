@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Derivagent - Brand Identity</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0a0e1a 0%, #1a1f2e 100%);
+            color: #ffffff;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .brand-section {
+            margin-bottom: 4rem;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 3rem;
+        }
+        
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            background: linear-gradient(45deg, #00d4ff, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+        }
+        
+        /* Primary Logo Designs */
+        .logo-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .logo-variant {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .logo-variant:hover {
+            border-color: rgba(0, 212, 255, 0.4);
+            transform: translateY(-2px);
+        }
+        
+        .logo-primary {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, #00d4ff, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -2px;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+        
+        .logo-secondary {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffffff, #00d4ff, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+            margin-bottom: 1rem;
+        }
+        
+        .logo-icon {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, #00d4ff, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+        
+        .logo-icon::before {
+            content: '';
+            position: absolute;
+            left: -40px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(45deg, #00d4ff, #00ff88);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .logo-icon::after {
+            content: 'D';
+            position: absolute;
+            left: -33px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #000000;
+            font-weight: 800;
+            font-size: 1.2rem;
+        }
+        
+        .logo-description {
+            font-size: 0.9rem;
+            color: #9ca3af;
+            margin-bottom: 1rem;
+        }
+        
+        .tagline {
+            font-size: 0.8rem;
+            color: #00d4ff;
+            font-weight: 500;
+            font-style: italic;
+        }
+        
+        /* Brand Colors */
+        .color-palette {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+        
+        .color-swatch {
+            text-align: center;
+            padding: 1.5rem 1rem;
+            border-radius: 8px;
+            color: #ffffff;
+            font-weight: 600;
+        }
+        
+        .color-primary {
+            background: linear-gradient(45deg, #00d4ff, #0099cc);
+        }
+        
+        .color-secondary {
+            background: linear-gradient(45deg, #00ff88, #00cc66);
+        }
+        
+        .color-accent {
+            background: linear-gradient(45deg, #00d4ff, #00ff88);
+        }
+        
+        .color-dark {
+            background: #0a0e1a;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .color-code {
+            font-family: 'Courier New', monospace;
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+            opacity: 0.8;
+        }
+        
+        /* Typography */
+        .typography-showcase {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+        
+        .type-sample {
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            border-left: 4px solid;
+        }
+        
+        .type-h1 {
+            border-left-color: #00d4ff;
+            font-size: 2.5rem;
+            font-weight: 800;
+        }
+        
+        .type-h2 {
+            border-left-color: #00ff88;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+        
+        .type-h3 {
+            border-left-color: #ffffff;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .type-body {
+            border-left-color: #9ca3af;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.6;
+        }
+        
+        /* App Icon Designs */
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .app-icon {
+            width: 100px;
+            height: 100px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #000000;
+            margin: 0 auto 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .icon-gradient {
+            background: linear-gradient(45deg, #00d4ff, #00ff88);
+        }
+        
+        .icon-split {
+            background: linear-gradient(45deg, #00d4ff 50%, #00ff88 50%);
+        }
+        
+        .icon-radial {
+            background: radial-gradient(circle at 30% 30%, #00ff88, #00d4ff);
+        }
+        
+        .icon-dark {
+            background: #0a0e1a;
+            border: 2px solid #00d4ff;
+            color: #00d4ff;
+        }
+        
+        .icon-text {
+            text-align: center;
+            font-size: 0.8rem;
+            color: #9ca3af;
+        }
+        
+        /* Usage Examples */
+        .usage-examples {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        
+        .usage-card {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .mock-header {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .mock-logo {
+            font-size: 1.2rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #00d4ff, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+        
+        .mock-nav {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.9rem;
+            color: #9ca3af;
+        }
+        
+        .business-card {
+            background: linear-gradient(135deg, #0a0e1a, #1a1f2e);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .business-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #00d4ff, #00ff88);
+        }
+        
+        .card-logo {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, #00d4ff, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .card-tagline {
+            font-size: 0.9rem;
+            color: #9ca3af;
+            margin-bottom: 1rem;
+        }
+        
+        .card-contact {
+            font-size: 0.8rem;
+            color: #00d4ff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Logo Showcase -->
+        <div class="brand-section">
+            <h1 class="section-title">Derivagent Logo Variations</h1>
+            <div class="logo-showcase">
+                <div class="logo-variant">
+                    <div class="logo-primary">Derivagent</div>
+                    <div class="logo-description">Primary Logo - Clean & Modern</div>
+                    <div class="tagline">Derivatives + Agent Intelligence</div>
+                </div>
+                
+                <div class="logo-variant">
+                    <div class="logo-secondary">DERIVAGENT</div>
+                    <div class="logo-description">All Caps - Bold & Authoritative</div>
+                    <div class="tagline">Institutional Presence</div>
+                </div>
+                
+                <div class="logo-variant">
+                    <div class="logo-icon">Derivagent</div>
+                    <div class="logo-description">Icon + Text - App & Branding</div>
+                    <div class="tagline">Versatile Brand Mark</div>
+                </div>
+                
+                <div class="logo-variant">
+                    <div style="font-size: 2rem; font-weight: 700; background: linear-gradient(45deg, #00d4ff, #00ff88); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 1px;">D E R I V A G E N T</div>
+                    <div class="logo-description">Spaced - Premium & Luxury</div>
+                    <div class="tagline">High-End Applications</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Color Palette -->
+        <div class="brand-section">
+            <h2 class="section-title">Brand Color Palette</h2>
+            <div class="color-palette">
+                <div class="color-swatch color-primary">
+                    <div>Primary Blue</div>
+                    <div class="color-code">#00D4FF</div>
+                </div>
+                <div class="color-swatch color-secondary">
+                    <div>Success Green</div>
+                    <div class="color-code">#00FF88</div>
+                </div>
+                <div class="color-swatch color-accent">
+                    <div>Gradient Accent</div>
+                    <div class="color-code">Linear Gradient</div>
+                </div>
+                <div class="color-swatch color-dark">
+                    <div>Dark Background</div>
+                    <div class="color-code">#0A0E1A</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Typography -->
+        <div class="brand-section">
+            <h2 class="section-title">Typography System</h2>
+            <div class="typography-showcase">
+                <div class="type-sample type-h1">
+                    Heading 1 - Transform Trading Intelligence
+                </div>
+                <div class="type-sample type-h2">
+                    Heading 2 - Revolutionary AI Agents
+                </div>
+                <div class="type-sample type-h3">
+                    Heading 3 - Systematic Edge Capture
+                </div>
+                <div class="type-sample type-body">
+                    Body Text - Dreivagent democratizes institutional-grade trading intelligence through revolutionary GenAI agents that think, learn, and execute like professional quantitative teams.
+                </div>
+            </div>
+        </div>
+        
+        <!-- App Icons -->
+        <div class="brand-section">
+            <h2 class="section-title">App Icon Designs</h2>
+            <div class="icon-grid">
+                <div>
+                    <div class="app-icon icon-gradient">D</div>
+                    <div class="icon-text">Gradient Fill</div>
+                </div>
+                <div>
+                    <div class="app-icon icon-split">D</div>
+                    <div class="icon-text">Split Design</div>
+                </div>
+                <div>
+                    <div class="app-icon icon-radial">D</div>
+                    <div class="icon-text">Radial Gradient</div>
+                </div>
+                <div>
+                    <div class="app-icon icon-dark">D</div>
+                    <div class="icon-text">Dark Outline</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Usage Examples -->
+        <div class="brand-section">
+            <h2 class="section-title">Brand Applications</h2>
+            <div class="usage-examples">
+                <div class="usage-card">
+                    <h3 style="margin-bottom: 1rem; color: #00d4ff;">Website Header</h3>
+                    <div class="mock-header">
+                        <div class="mock-logo">Derivagent</div>
+                        <div class="mock-nav">
+                            <span>Platform</span>
+                            <span>Strategies</span>
+                            <span>Pricing</span>
+                            <span>Login</span>
+                        </div>
+                    </div>
+                    <p style="font-size: 0.9rem; color: #9ca3af;">Clean, professional header with strong brand presence</p>
+                </div>
+                
+                <div class="usage-card">
+                    <h3 style="margin-bottom: 1rem; color: #00ff88;">Business Card</h3>
+                    <div class="business-card">
+                        <div class="card-logo">Derivagent</div>
+                        <div class="card-tagline">AI-Powered Trading Intelligence</div>
+                        <div class="card-contact">
+                            contact@derivagent.com<br>
+                            Democratizing the House Edge
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Brand Messaging -->
+        <div class="brand-section">
+            <h2 class="section-title">Brand Messaging Framework</h2>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                <div style="background: rgba(0, 212, 255, 0.1); border: 1px solid rgba(0, 212, 255, 0.3); border-radius: 12px; padding: 2rem;">
+                    <h3 style="color: #00d4ff; margin-bottom: 1rem;">Core Value Proposition</h3>
+                    <p style="color: #e5e7eb; line-height: 1.6;">
+                        "Derivagent democratizes the $30B+ institutional house edge through revolutionary GenAI agents that transform individual portfolios into systematic profit engines."
+                    </p>
+                </div>
+                
+                <div style="background: rgba(0, 255, 136, 0.1); border: 1px solid rgba(0, 255, 136, 0.3); border-radius: 12px; padding: 2rem;">
+                    <h3 style="color: #00ff88; margin-bottom: 1rem;">Brand Promise</h3>
+                    <p style="color: #e5e7eb; line-height: 1.6;">
+                        "From $10K personal accounts to institutional fund management - access the same mathematical advantages that generate billions for major trading firms."
+                    </p>
+                </div>
+            </div>
+            
+            <div style="margin-top: 2rem; text-align: center; background: rgba(255, 255, 255, 0.03); border-radius: 12px; padding: 2rem;">
+                <h3 style="color: #ffffff; margin-bottom: 1rem;">Tagline Options</h3>
+                <div style="display: grid; grid-template-columns: 1fr; gap: 1rem; max-width: 600px; margin: 0 auto;">
+                    <div style="padding: 1rem; background: rgba(0, 212, 255, 0.1); border-radius: 8px; color: #00d4ff; font-weight: 600;">
+                        "Democratizing the House Edge"
+                    </div>
+                    <div style="padding: 1rem; background: rgba(0, 255, 136, 0.1); border-radius: 8px; color: #00ff88; font-weight: 600;">
+                        "AI-Powered Trading Intelligence"
+                    </div>
+                    <div style="padding: 1rem; background: rgba(255, 255, 255, 0.1); border-radius: 8px; color: #ffffff; font-weight: 600;">
+                        "Systematic Profit Engineering"
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

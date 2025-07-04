@@ -1,0 +1,164 @@
+{
+  "cache_enabled": true,
+  "default_cache_ttl": 300,
+  "default_market_data_provider": "polygon",
+  "redis": {
+    "host": "localhost",
+    "port": 6379,
+    "db": 1,
+    "password": null
+  },
+  "routing": {
+    "quote_preference": "broker_first",
+    "options_preference": "broker_first", 
+    "historical_preference": "market_data_only",
+    "fallback_enabled": true,
+    "max_retry_attempts": 3
+  },
+  "providers": {
+    "polygon": {
+      "enabled": true,
+      "api_key": "os.environ/POLYGON_API_KEY",
+      "rate_limit": 5,
+      "priority": 1,
+      "capabilities": ["quotes", "options", "historical", "real_time"],
+      "supported_symbols": ["stocks", "etfs", "options"],
+      "cost_per_request": 0.001
+    },
+    "schwab": {
+      "enabled": true,
+      "client_id": "os.environ/SCHWAB_CLIENT_ID",
+      "client_secret": "os.environ/SCHWAB_CLIENT_SECRET", 
+      "redirect_uri": "https://localhost:8080/callback",
+      "rate_limit": 120,
+      "priority": 2,
+      "capabilities": ["quotes", "options", "historical", "accounts", "trading"],
+      "supported_symbols": ["stocks", "etfs", "options"],
+      "cost_per_request": 0.0
+    },
+    "alpha_vantage": {
+      "enabled": true,
+      "api_key": "os.environ/ALPHA_VANTAGE_API_KEY",
+      "rate_limit": 5,
+      "daily_limit": 25,
+      "priority": 3,
+      "capabilities": ["quotes", "historical", "fundamentals"],
+      "supported_symbols": ["stocks", "etfs"],
+      "cost_per_request": 0.0,
+      "data_delay_minutes": 15
+    }
+  },
+  "data_quality": {
+    "quote_staleness_threshold_seconds": 60,
+    "options_staleness_threshold_seconds": 300,
+    "historical_staleness_threshold_hours": 24,
+    "validate_price_changes": true,
+    "max_price_change_percent": 20.0,
+    "validate_spread_width": true,
+    "max_spread_percent": 10.0
+  },
+  "performance": {
+    "connection_timeout_seconds": 30,
+    "request_timeout_seconds": 10,
+    "max_concurrent_requests": 50,
+    "circuit_breaker_enabled": true,
+    "circuit_breaker_failure_threshold": 5,
+    "circuit_breaker_timeout_seconds": 60
+  },
+  "monitoring": {
+    "log_all_requests": false,
+    "log_errors": true,
+    "track_latency": true,
+    "track_data_sources": true,
+    "alert_on_provider_failures": true,
+    "performance_metrics_enabled": true
+  },
+  "cache_policies": {
+    "quotes": {
+      "ttl_seconds": 30,
+      "max_age_trading_hours": 15,
+      "max_age_after_hours": 300
+    },
+    "options_chains": {
+      "ttl_seconds": 300,
+      "max_age_trading_hours": 180,
+      "max_age_after_hours": 600
+    },
+    "historical_data": {
+      "ttl_seconds": 3600,
+      "max_age_intraday": 300,
+      "max_age_daily": 3600,
+      "max_age_weekly": 86400
+    },
+    "account_data": {
+      "ttl_seconds": 60,
+      "positions_ttl": 30,
+      "orders_ttl": 10
+    }
+  },
+  "symbol_routing": {
+    "spy": {
+      "preferred_provider": "schwab",
+      "fallback_providers": ["polygon", "alpha_vantage"]
+    },
+    "qqq": {
+      "preferred_provider": "polygon",
+      "fallback_providers": ["alpha_vantage", "schwab"]
+    },
+    "iwm": {
+      "preferred_provider": "polygon", 
+      "fallback_providers": ["alpha_vantage", "schwab"]
+    },
+    "spx": {
+      "preferred_provider": "polygon",
+      "fallback_providers": ["schwab"]
+    },
+    "vix": {
+      "preferred_provider": "polygon",
+      "fallback_providers": ["alpha_vantage"]
+    }
+  },
+  "data_validation": {
+    "enabled": true,
+    "rules": {
+      "price_validation": {
+        "min_price": 0.01,
+        "max_price": 10000,
+        "require_positive": true
+      },
+      "volume_validation": {
+        "min_volume": 0,
+        "max_volume": 1000000000,
+        "require_non_negative": true
+      },
+      "spread_validation": {
+        "max_spread_percent": 15.0,
+        "require_bid_less_than_ask": true
+      },
+      "greeks_validation": {
+        "delta_range": [-1.0, 1.0],
+        "gamma_range": [0.0, 1.0],
+        "theta_range": [-10.0, 0.0],
+        "vega_range": [0.0, 100.0]
+      }
+    }
+  },
+  "cost_optimization": {
+    "enabled": true,
+    "daily_budget_usd": 50.0,
+    "cost_tracking": {
+      "track_by_provider": true,
+      "track_by_data_type": true,
+      "track_by_user": true
+    },
+    "budget_alerts": {
+      "threshold_percent": 80.0,
+      "alert_frequency_minutes": 60
+    },
+    "smart_routing": {
+      "prefer_free_sources": true,
+      "cost_weight": 0.3,
+      "quality_weight": 0.7
+    }
+  }
+}

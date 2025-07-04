@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test API Connection</title>
+</head>
+<body>
+    <h1>Testing Derivagent API Connection</h1>
+    <div id="results"></div>
+    
+    <script>
+        async function testAPI() {
+            const results = document.getElementById('results');
+            results.innerHTML = '<p>Testing API connection...</p>';
+            
+            try {
+                console.log('Testing health endpoint...');
+                const healthResponse = await fetch('http://localhost:8001/health');
+                const healthData = await healthResponse.json();
+                
+                results.innerHTML += `<h3>✅ Health Check:</h3><pre>${JSON.stringify(healthData, null, 2)}</pre>`;
+                
+                console.log('Testing market regime agent...');
+                const agentResponse = await fetch('http://localhost:8001/agents/market-regime', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        prompt: 'Test analysis from React frontend',
+                        context: { test: true }
+                    })
+                });
+                
+                const agentData = await agentResponse.json();
+                results.innerHTML += `<h3>🤖 Agent Test:</h3><pre>${JSON.stringify(agentData, null, 2)}</pre>`;
+                
+            } catch (error) {
+                results.innerHTML += `<h3>❌ Error:</h3><p>${error.message}</p>`;
+                console.error('API test failed:', error);
+            }
+        }
+        
+        // Run test on page load
+        window.onload = testAPI;
+    </script>
+</body>
+</html>

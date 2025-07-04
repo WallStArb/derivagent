@@ -1,0 +1,29 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -m pip install:*)",
+      "Bash(python3 -m pip install:*)",
+      "Bash(sudo apt:*)",
+      "Bash(sudo apt install:*)",
+      "Bash(python3:*)",
+      "Bash(grep:*)",
+      "Bash(cp:*)",
+      "Bash(chmod:*)",
+      "Bash(source:*)",
+      "Bash(pip install:*)",
+      "Bash(curl:*)",
+      "Bash(pkill:*)",
+      "Bash(node:*)",
+      "Bash(npm install)",
+      "Bash(npm audit:*)",
+      "Bash(redis-cli:*)",
+      "Bash(python test:*)",
+      "Bash(cat:*)",
+      "Bash(find:*)",
+      "Bash(python:*)",
+      "Bash(timeout:*)",
+      "Bash(ls:*)"
+    ],
+    "deny": []
+  }
+}

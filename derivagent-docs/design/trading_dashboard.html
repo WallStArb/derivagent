@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agentic Derivatives Platform - Trading Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0f1419 0%, #1a2332 100%);
+            color: #ffffff;
+            min-height: 100vh;
+        }
+        
+        .header {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #00d4ff, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+        
+        .ai-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(0, 255, 136, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+        }
+        
+        .ai-indicator {
+            width: 8px;
+            height: 8px;
+            background: #00ff88;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .main-container {
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            border-color: rgba(0, 212, 255, 0.5);
+            box-shadow: 0 8px 32px rgba(0, 212, 255, 0.1);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #ffffff;
+        }
+        
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .status-active {
+            background: rgba(0, 255, 136, 0.2);
+            color: #00ff88;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+        }
+        
+        .status-monitoring {
+            background: rgba(255, 165, 0, 0.2);
+            color: #ffa500;
+            border: 1px solid rgba(255, 165, 0, 0.3);
+        }
+        
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #00ff88;
+            margin-bottom: 0.5rem;
+        }
+        
+        .metric-label {
+            font-size: 0.9rem;
+            color: #9ca3af;
+        }
+        
+        .ai-insight {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(0, 255, 136, 0.1));
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .ai-insight-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #00d4ff;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .ai-insight-text {
+            font-size: 0.85rem;
+            line-height: 1.4;
+            color: #e5e7eb;
+        }
+        
+        .strategy-section {
+            grid-column: 1 / -1;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+        }
+        
+        .section-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(45deg, #ffffff, #9ca3af);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .strategy-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+        
+        .strategy-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .strategy-card:hover {
+            border-color: rgba(0, 255, 136, 0.4);
+            transform: translateY(-2px);
+        }
+        
+        .strategy-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .strategy-name {
+            font-weight: 600;
+            color: #ffffff;
+        }
+        
+        .confidence-score {
+            background: rgba(0, 255, 136, 0.2);
+            color: #00ff88;
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .strategy-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+        }
+        
+        .detail-label {
+            color: #9ca3af;
+        }
+        
+        .detail-value {
+            color: #ffffff;
+            font-weight: 500;
+        }
+        
+        .deploy-button {
+            width: 100%;
+            background: linear-gradient(45deg, #00d4ff, #00ff88);
+            border: none;
+            border-radius: 6px;
+            padding: 0.75rem;
+            color: #000000;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .deploy-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 16px rgba(0, 212, 255, 0.3);
+        }
+        
+        .usage-tracker {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 1rem;
+            min-width: 250px;
+        }
+        
+        .usage-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #00d4ff;
+        }
+        
+        .usage-bar {
+            background: rgba(255, 255, 255, 0.1);
+            height: 6px;
+            border-radius: 3px;
+            margin-bottom: 0.5rem;
+            overflow: hidden;
+        }
+        
+        .usage-fill {
+            background: linear-gradient(90deg, #00ff88, #00d4ff);
+            height: 100%;
+            width: 23%;
+            border-radius: 3px;
+        }
+        
+        .usage-text {
+            font-size: 0.8rem;
+            color: #9ca3af;
+        }
+        
+        .brain-icon {
+            width: 16px;
+            height: 16px;
+            background: linear-gradient(45deg, #00d4ff, #00ff88);
+            border-radius: 3px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">Derivagent</div>
+        <div class="ai-status">
+            <div class="ai-indicator"></div>
+            <span>AI Agents Active</span>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="grid">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Portfolio Performance</div>
+                    <div class="status-badge status-active">Live</div>
+                </div>
+                <div class="metric-value">+$2,847</div>
+                <div class="metric-label">Daily P&L (+1.34% portfolio)</div>
+                <div class="ai-insight">
+                    <div class="ai-insight-title">
+                        <div class="brain-icon"></div>
+                        AI Insight
+                    </div>
+                    <div class="ai-insight-text">
+                        Portfolio Greeks optimally balanced. MEIC position approaching 67% max profit - close signal activated.
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Greeks Balance</div>
+                    <div class="status-badge status-monitoring">Monitoring</div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div>
+                        <div style="font-size: 1.5rem; font-weight: 600; color: #00ff88;">+23</div>
+                        <div style="font-size: 0.8rem; color: #9ca3af;">Delta</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 1.5rem; font-weight: 600; color: #ffa500;">+127</div>
+                        <div style="font-size: 0.8rem; color: #9ca3af;">Gamma</div>
+                    </div>
+                </div>
+                <div class="ai-insight">
+                    <div class="ai-insight-title">
+                        <div class="brain-icon"></div>
+                        Risk Alert
+                    </div>
+                    <div class="ai-insight-text">
+                        Gamma approaching +150 limit. Consider hedging or position reduction.
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Analysis Efficiency</div>
+                    <div class="status-badge status-active">Optimized</div>
+                </div>
+                <div class="metric-value">31%</div>
+                <div class="metric-label">Cost reduction this month</div>
+                <div class="ai-insight">
+                    <div class="ai-insight-title">
+                        <div class="brain-icon"></div>
+                        Cost Optimization
+                    </div>
+                    <div class="ai-insight-text">
+                        AI agents learning efficiently. $180 analysis cost generated $45K profit this quarter.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="strategy-section">
+            <div class="section-title">AI-Recommended Strategies</div>
+            <div class="strategy-grid">
+                <div class="strategy-card">
+                    <div class="strategy-header">
+                        <div class="strategy-name">Iron Condor (MEIC)</div>
+                        <div class="confidence-score">87% Confidence</div>
+                    </div>
+                    <div class="strategy-details">
+                        <div class="detail-item">
+                            <span class="detail-label">Market Regime:</span>
+                            <span class="detail-value">Range-bound</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">IV Rank:</span>
+                            <span class="detail-value">73rd percentile</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Target Delta:</span>
+                            <span class="detail-value">18-delta shorts</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Expected Return:</span>
+                            <span class="detail-value">+1.2% (18 days)</span>
+                        </div>
+                    </div>
+                    <div class="ai-insight">
+                        <div class="ai-insight-title">
+                            <div class="brain-icon"></div>
+                            AI Analysis
+                        </div>
+                        <div class="ai-insight-text">
+                            Current regime optimal for systematic premium collection. Deploy MEIC with 6 entries over 3-hour window.
+                        </div>
+                    </div>
+                    <button class="deploy-button">Deploy Strategy</button>
+                </div>
+
+                <div class="strategy-card">
+                    <div class="strategy-header">
+                        <div class="strategy-name">Calendar Spread</div>
+                        <div class="confidence-score">74% Confidence</div>
+                    </div>
+                    <div class="strategy-details">
+                        <div class="detail-item">
+                            <span class="detail-label">Term Structure:</span>
+                            <span class="detail-value">Steep contango</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Volatility Edge:</span>
+                            <span class="detail-value">Front < Back 15%</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Optimal Strike:</span>
+                            <span class="detail-value">ATM (4500)</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Expected Return:</span>
+                            <span class="detail-value">+0.8% (vol expansion)</span>
+                        </div>
+                    </div>
+                    <div class="ai-insight">
+                        <div class="ai-insight-title">
+                            <div class="brain-icon"></div>
+                            AI Analysis
+                        </div>
+                        <div class="ai-insight-text">
+                            Term structure favorable for calendar deployment. Complements iron condor positions for optimal Greeks balance.
+                        </div>
+                    </div>
+                    <button class="deploy-button">Deploy Strategy</button>
+                </div>
+
+                <div class="strategy-card">
+                    <div class="strategy-header">
+                        <div class="strategy-name">Margin Optimization</div>
+                        <div class="confidence-score">92% Confidence</div>
+                    </div>
+                    <div class="strategy-details">
+                        <div class="detail-item">
+                            <span class="detail-label">Current Margin:</span>
+                            <span class="detail-value">RegT ($8,200)</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Portfolio Margin:</span>
+                            <span class="detail-value">$5,400 (-34%)</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Capital Freed:</span>
+                            <span class="detail-value">$2,800</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">ROI Impact:</span>
+                            <span class="detail-value">+41% efficiency</span>
+                        </div>
+                    </div>
+                    <div class="ai-insight">
+                        <div class="ai-insight-title">
+                            <div class="brain-icon"></div>
+                            AI Analysis
+                        </div>
+                        <div class="ai-insight-text">
+                            Portfolio Margin switch recommended. Frees $2,800 capital for additional strategy deployment.
+                        </div>
+                    </div>
+                    <button class="deploy-button">Implement Optimization</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="usage-tracker">
+        <div class="usage-title">AI Intelligence Usage</div>
+        <div class="usage-bar">
+            <div class="usage-fill"></div>
+        </div>
+        <div class="usage-text">847K / 1.5M units used this month</div>
+        <div style="font-size: 0.75rem; color: #00ff88; margin-top: 0.5rem;">
+            31% more efficient than last month
+        </div>
+    </div>
+</body>
+</html>

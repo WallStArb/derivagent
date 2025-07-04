@@ -1,0 +1,643 @@
+    <title>Derivagent - AI Agent Intelligence Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0a0e1a 0%, #1a1f2e 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .demo-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .demo-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .demo-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, #00d4ff, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+        
+        .demo-subtitle {
+            font-size: 1.2rem;
+            color: #9ca3af;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .agent-workspace {
+            display: grid;
+            grid-template-columns: 300px 1fr 300px;
+            gap: 2rem;
+            height: 70vh;
+        }
+        
+        .agent-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 1.5rem;
+            overflow-y: auto;
+        }
+        
+        .panel-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: #00d4ff;
+            text-align: center;
+        }
+        
+        .agent-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .agent-card:hover {
+            border-color: rgba(0, 255, 136, 0.4);
+            transform: translateX(2px);
+        }
+        
+        .agent-card.active {
+            border-color: rgba(0, 255, 136, 0.6);
+            background: rgba(0, 255, 136, 0.1);
+        }
+        
+        .agent-name {
+            font-weight: 600;
+            color: #00ff88;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .agent-status {
+            font-size: 0.8rem;
+            color: #9ca3af;
+            margin-bottom: 0.5rem;
+        }
+        
+        .agent-activity {
+            font-size: 0.75rem;
+            color: #00d4ff;
+            font-style: italic;
+        }
+        
+        .main-display {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .display-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .display-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+        
+        .confidence-badge {
+            background: linear-gradient(45deg, #00d4ff, #00ff88);
+            color: #000000;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .analysis-section {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        
+        .analysis-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .analysis-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #00d4ff;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .metric-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .metric {
+            text-align: center;
+        }
+        
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #00ff88;
+        }
+        
+        .metric-label {
+            font-size: 0.8rem;
+            color: #9ca3af;
+            text-transform: uppercase;
+        }
+        
+        .recommendation {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(0, 255, 136, 0.1));
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .recommendation-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #00d4ff;
+            margin-bottom: 0.5rem;
+        }
+        
+        .recommendation-text {
+            font-size: 0.85rem;
+            line-height: 1.4;
+            color: #e5e7eb;
+        }
+        
+        .action-log {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8rem;
+            line-height: 1.4;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .log-entry {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+        
+        .log-time {
+            color: #9ca3af;
+            min-width: 60px;
+        }
+        
+        .log-agent {
+            color: #00d4ff;
+            min-width: 120px;
+            font-weight: 600;
+        }
+        
+        .log-message {
+            color: #e5e7eb;
+            flex: 1;
+        }
+        
+        .log-success {
+            color: #00ff88;
+        }
+        
+        .log-warning {
+            color: #ffa500;
+        }
+        
+        .deploy-button {
+            background: linear-gradient(45deg, #00d4ff, #00ff88);
+            color: #000000;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 2rem;
+            width: 100%;
+        }
+        
+        .deploy-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 212, 255, 0.4);
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .activity-indicator {
+            width: 8px;
+            height: 8px;
+            background: #00ff88;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <div class="demo-header">
+            <h1 class="demo-title">Derivagent AI Intelligence in Action</h1>
+            <p class="demo-subtitle">Watch our GenAI agents analyze market conditions and coordinate systematic strategy deployment in real-time</p>
+        </div>
+        
+        <div class="agent-workspace">
+            <!-- Left Panel - Available Agents -->
+            <div class="agent-panel">
+                <h3 class="panel-title">🧠 AI Agent Network</h3>
+                
+                <div class="agent-card active">
+                    <div class="agent-name">
+                        <div class="activity-indicator"></div>
+                        Market Intelligence
+                    </div>
+                    <div class="agent-status">Status: Active Analysis</div>
+                    <div class="agent-activity">Analyzing 23 volatility factors...</div>
+                </div>
+                
+                <div class="agent-card active">
+                    <div class="agent-name">
+                        <div class="activity-indicator"></div>
+                        MEIC Specialist
+                    </div>
+                    <div class="agent-status">Status: Strategy Ready</div>
+                    <div class="agent-activity">87% deployment confidence</div>
+                </div>
+                
+                <div class="agent-card">
+                    <div class="agent-name">
+                        <div style="width: 8px; height: 8px; background: #9ca3af; border-radius: 50%;"></div>
+                        Calendar Specialist
+                    </div>
+                    <div class="agent-status">Status: Monitoring</div>
+                    <div class="agent-activity">Awaiting volatility expansion</div>
+                </div>
+                
+                <div class="agent-card active">
+                    <div class="agent-name">
+                        <div class="activity-indicator"></div>
+                        Portfolio Optimizer
+                    </div>
+                    <div class="agent-status">Status: Greeks Analysis</div>
+                    <div class="agent-activity">Optimizing theta/delta ratio</div>
+                </div>
+                
+                <div class="agent-card active">
+                    <div class="agent-name">
+                        <div class="activity-indicator"></div>
+                        Execution Router
+                    </div>
+                    <div class="agent-status">Status: Broker Analysis</div>
+                    <div class="agent-activity">TradeStation optimal routing</div>
+                </div>
+                
+                <div class="agent-card">
+                    <div class="agent-name">
+                        <div style="width: 8px; height: 8px; background: #9ca3af; border-radius: 50%;"></div>
+                        Risk Manager
+                    </div>
+                    <div class="agent-status">Status: Monitoring</div>
+                    <div class="agent-activity">All systems normal</div>
+                </div>
+            </div>
+            
+            <!-- Center Panel - Main Analysis Display -->
+            <div class="main-display">
+                <div class="display-header">
+                    <div class="display-title">🎯 MEIC Strategy Deployment</div>
+                    <div class="confidence-badge">87% Confidence</div>
+                </div>
+                
+                <div class="analysis-section">
+                    <div class="analysis-card">
+                        <div class="analysis-title">📊 Market Conditions</div>
+                        <div class="metric-grid">
+                            <div class="metric">
+                                <div class="metric-value">73rd</div>
+                                <div class="metric-label">IV Percentile</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">18.2</div>
+                                <div class="metric-label">VIX Level</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">Range</div>
+                                <div class="metric-label">Market Regime</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">Low</div>
+                                <div class="metric-label">Correlation</div>
+                            </div>
+                        </div>
+                        <div class="recommendation">
+                            <div class="recommendation-title">AI Analysis</div>
+                            <div class="recommendation-text">
+                                Optimal conditions detected for systematic premium collection. Market showing classic range-bound characteristics with elevated IV suitable for MEIC deployment.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="analysis-card">
+                        <div class="analysis-title">⚙️ Strategy Parameters</div>
+                        <div class="metric-grid">
+                            <div class="metric">
+                                <div class="metric-value">18Δ</div>
+                                <div class="metric-label">Short Strikes</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">45</div>
+                                <div class="metric-label">Days to Exp</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">6</div>
+                                <div class="metric-label">Entry Tranches</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">$1.25</div>
+                                <div class="metric-label">Min Credit</div>
+                            </div>
+                        </div>
+                        <div class="recommendation">
+                            <div class="recommendation-title">Optimization</div>
+                            <div class="recommendation-text">
+                                18-delta shorts optimal vs standard 16-delta. Deploy over 3-hour window with TradeStation routing for best total value.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="analysis-card">
+                        <div class="analysis-title">📈 Expected Outcomes</div>
+                        <div class="metric-grid">
+                            <div class="metric">
+                                <div class="metric-value">+1.2%</div>
+                                <div class="metric-label">Target Return</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">18</div>
+                                <div class="metric-label">Days Hold</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">87%</div>
+                                <div class="metric-label">Success Prob</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">2.3%</div>
+                                <div class="metric-label">Portfolio Risk</div>
+                            </div>
+                        </div>
+                        <div class="recommendation">
+                            <div class="recommendation-title">Risk/Reward</div>
+                            <div class="recommendation-text">
+                                Historical analysis shows 82.6% success rate in similar conditions. Expected profit $840 with $12 analysis cost investment.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="analysis-card">
+                        <div class="analysis-title">💰 Cost Efficiency</div>
+                        <div class="metric-grid">
+                            <div class="metric">
+                                <div class="metric-value">$12</div>
+                                <div class="metric-label">Analysis Cost</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">$840</div>
+                                <div class="metric-label">Expected Profit</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">7,000%</div>
+                                <div class="metric-label">Analysis ROI</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">34%</div>
+                                <div class="metric-label">Efficiency Gain</div>
+                            </div>
+                        </div>
+                        <div class="recommendation">
+                            <div class="recommendation-title">Value Creation</div>
+                            <div class="recommendation-text">
+                                AI agents 34% more efficient this month. Analysis cost decreasing while accuracy improving through continuous learning.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="deploy-button" onclick="deployStrategy()">
+                    Deploy MEIC Strategy - $12 Analysis Cost
+                </button>
+            </div>
+            
+            <!-- Right Panel - Live Activity Log -->
+            <div class="agent-panel">
+                <h3 class="panel-title">📋 Live Agent Activity</h3>
+                <div class="action-log">
+                    <div class="log-entry">
+                        <div class="log-time">14:23</div>
+                        <div class="log-agent">Market Intel</div>
+                        <div class="log-message log-success">✓ Range-bound regime confirmed</div>
+                    </div>
+                    <div class="log-entry">
+                        <div class="log-time">14:23</div>
+                        <div class="log-agent">Market Intel</div>
+                        <div class="log-message">Analyzing IV rank: 73rd percentile</div>
+                    </div>
+                    <div class="log-entry">
+                        <div class="log-time">14:24</div>
+                        <div class="log-agent">MEIC Specialist</div>
+                        <div class="log-message log-success">✓ Optimal deployment conditions</div>
+                    </div>
+                    <div class="log-entry">
+                        <div class="log-time">14:24</div>
+                        <div class="log-agent">Portfolio Opt</div>
+                        <div class="log-message">Greeks analysis: Delta +23, safe range</div>
+                    </div>
+                    <div class="log-entry">
+                        <div class="log-time">14:25</div>
+                        <div class="log-agent">Execution Router</div>
+                        <div class="log-message">TradeStation: Best total value</div>
+                    </div>
+                    <div class="log-entry">
+                        <div class="log-time">14:25</div>
+                        <div class="log-agent">MEIC Specialist</div>
+                        <div class="log-message log-success">✓ Strategy ready: 87% confidence</div>
+                    </div>
+                    <div class="log-entry">
+                        <div class="log-time">14:26</div>
+                        <div class="log-agent">Cost Optimizer</div>
+                        <div class="log-message">Analysis efficiency: +34% vs last month</div>
+                    </div>
+                    <div class="log-entry">
+                        <div class="log-time">14:26</div>
+                        <div class="log-agent">Risk Manager</div>
+                        <div class="log-message log-success">✓ All risk parameters within limits</div>
+                    </div>
+                    <div class="log-entry">
+                        <div class="log-time">14:27</div>
+                        <div class="log-agent">Portfolio Opt</div>
+                        <div class="log-message log-warning">⚠ Gamma approaching +150 limit</div>
+                    </div>
+                    <div class="log-entry">
+                        <div class="log-time">14:27</div>
+                        <div class="log-agent">System</div>
+                        <div class="log-message pulse">🚀 Ready for deployment...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function deployStrategy() {
+            alert('🚀 ME<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dreivagent - AI Agent Intelligence Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0a0e1a 0%, #1a1f2e 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .demo-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .demo-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .demo-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, #00d4ff, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+        
+        .demo-subtitle {
+            font-size: 1.2rem;
+            color: #9ca3af;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .agent-workspace {
+            display: grid;
+            grid-template-columns: 300px 1fr 300px;
+            gap: 2rem;
+            height: 70vh;
+        }
+        
+        .agent-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 1.5rem;
+            overflow-y: auto;
+        }
+        
+        .panel-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: #00d4ff;
+            text-align: center;
+        }
+        
+        .agent-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .agent-card:hover {
+            border-color: rgba(0, 255, 136, 0.4);
+            transform: translateX(2px);
+        }
+        
+        .agent-card.active {
+            border-color: rgba(0, 255, 136, 0.6);
+            background: rgba(0, 255, 136, 0.1);
+        }
+        
+        .agent-name {
+            font-weight: 600;
+            color: #00ff88;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
