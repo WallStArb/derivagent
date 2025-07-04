@@ -83,10 +83,40 @@ curl -X POST http://localhost:8000/agents/market-regime \
 **Frontend**: React 19 + TypeScript + Vite + Tailwind CSS
 **AI Models**: DeepSeek R1 (reasoning) + QwQ 32B (cost) + Grok 3 Mini (speed)
 
+## 🚂 Railway Deployment
+
+Deploy your backend to Railway for production hosting:
+
+### Quick Deploy
+```bash
+# Run the deployment script
+./deploy_railway.sh
+
+# Or deploy manually:
+npm install -g @railway/cli
+railway login
+railway init
+railway up
+```
+
+### Environment Variables
+Set these in Railway dashboard or via CLI:
+```bash
+railway variables set DEEPSEEK_API_KEY=your-key-here
+railway variables set OPENROUTER_API_KEY=your-key-here
+railway variables set SUPABASE_URL=your-supabase-url
+railway variables set SUPABASE_ANON_KEY=your-supabase-key
+```
+
+### Deployment URLs
+- **API**: `https://your-app-name.railway.app`
+- **API Docs**: `https://your-app-name.railway.app/docs`
+- **Health Check**: `https://your-app-name.railway.app/health`
+
 ## 🎯 Current Status
 
 ✅ **Week 1 Complete**: AI agents + basic UI  
-🔄 **Week 2 In Progress**: Polish + deployment  
+✅ **Week 2 In Progress**: Polish + Railway deployment  
 
 ## 🆘 Troubleshooting
 
